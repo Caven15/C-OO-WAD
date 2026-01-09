@@ -10,7 +10,7 @@ namespace Demo15
     {
         public static void LoggerDansFichier(int temp, string nom)
         {
-            Console.WriteLine($"[LOG FICHIER] : {DateTime.Now} - Hors limite sir {nom} ({temp}°C)");
+            Console.WriteLine($"[LOG FICHIER] : {DateTime.Now} - Hors limite sur {nom} ({temp}°C)");
         }
     }
 }

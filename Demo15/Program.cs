@@ -27,11 +27,12 @@
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"[ALERTE] n°{compteurAlerte} pour {nomConducteur} !!!");
                     Console.WriteLine($"[DANGER] : {composant} est en surchauffe à {temp}°C");
+                    Console.ResetColor();
                 };
             }
 
             // SIMULATION
-            Console.WriteLine("--- D2but du trajet ---");
+            Console.WriteLine("--- Début du trajet ---");
             ordinateur.AnalyserCapteur("Huile Moteur", 85);     // Pas d'alerte
             ordinateur.AnalyserCapteur("Freins Avants", 120);   // Déclenche les DEUX méthodes
             ordinateur.AnalyserCapteur("Batterie", 120);        // Déclenche les DEUX méthodes

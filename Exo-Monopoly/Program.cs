@@ -1,4 +1,5 @@
-﻿using Exo_Monopoly.Enums;
+﻿using System.Runtime.InteropServices;
+using Exo_Monopoly.Enums;
 using Exo_Monopoly.Interfaces;
 using Exo_Monopoly.Models;
 
@@ -125,40 +126,82 @@ foreach (int lance in lances)
 
             #region Correctif Interfaces
 
-            // 1 => Polymorphisme avec IVisiteur
-            // On créer une liste d'interface : On ne sait pas ce qu'il y dedans
-            // ON sait juste qu'ils ont tous le méthode Activer()
+            //// 1 => Polymorphisme avec IVisiteur
+            //// On créer une liste d'interface : On ne sait pas ce qu'il y dedans
+            //// ON sait juste qu'ils ont tous le méthode Activer()
 
-            List<IVisiteur> caseAvisiter = new List<IVisiteur>();
+            //List<IVisiteur> caseAvisiter = new List<IVisiteur>();
 
-            Joueur jojo = new Joueur("Le Grand Jojo", Pions.Dino);
-            Console.WriteLine($"Solde de départ de jojo : {jojo.Solde}  €");
+            //Joueur jojo = new Joueur("Le Grand Jojo", Pions.Dino);
+            //Console.WriteLine($"Solde de départ de jojo : {jojo.Solde}  €");
 
-            CasePropriete AvenueLouise = new CasePropriete("Avenue Louise", Couleurs.Bleu, 400);
-            caseAvisiter.Add(AvenueLouise);
+            //CasePropriete AvenueLouise = new CasePropriete("Avenue Louise", Couleurs.Bleu, 400);
+            //caseAvisiter.Add(AvenueLouise);
 
 
-            foreach (IVisiteur visiteur in caseAvisiter)
+            //foreach (IVisiteur visiteur in caseAvisiter)
+            //{
+            //    // On appelle Activer() Sur l'interface, peut importe la classe réelle
+            //    visiteur.Activer(jojo);
+            // }
+
+            //Console.WriteLine("PRopriétaire :" + AvenueLouise.Proprietaire?.Nom);
+
+            //// 2 => Polymorphisme avec IPropriétaire
+            //// On traite la rue uniquement sous l'angle gestion financière
+            //IProprietaire titreJojo = AvenueLouise;
+
+            //Console.WriteLine($"Solde de de jojo après aquisition de L'avenue Louise: {jojo.Solde} €");
+
+
+            //titreJojo.Hypothequer();
+            //Console.WriteLine($"Hypotèqye activé, solde jojo (+50%) {jojo.Solde} €");
+            //Console.WriteLine($"est hypotéquée ? : {titreJojo.EstHypotequee}");
+
+            //titreJojo.Deshypothequer();
+            //Console.WriteLine($"Hypotèque levée, solde jojo (-60%) {jojo.Solde} €");
+
+            #endregion
+
+            #region Correctif delegate
+
+            Joueur alain = new Joueur("Alain", Pions.Brouette);
+
+            // 1. : Une case qui donne un bonus
+            CaseDelegate bonusAction = delegate (Joueur joueur)
             {
-                // On appelle Activer() Sur l'interface, peut importe la classe réelle
-                visiteur.Activer(jojo);
-             }
+                joueur.EtrePayer(500);
+                Console.WriteLine("Bonus de 500 € reçu !");
+                return true;
+            };
 
-            Console.WriteLine("PRopriétaire :" + AvenueLouise.Proprietaire?.Nom);
+            // 2. : Une case qui inflige une amende
+            CaseDelegate malusAction = (joueur) =>
+            {
+                if (joueur.Solde >= 100)
+                {
+                    joueur.Payer(100);
+                    Console.WriteLine("Amende de 100€ payée...");
+                    return true;
+                }
+                return false;
+            };
 
-            // 2 => Polymorphisme avec IPropriétaire
-            // On traite la rue uniquement sous l'angle gestion financière
-            IProprietaire titreJojo = AvenueLouise;
+            // Utilisation concrète 
+            CaseAction caseBonus = new CaseAction("Caisse de communauté", bonusAction);
+            CaseAction caseMalus = new CaseAction("Taxe de luxe", malusAction);
 
-            Console.WriteLine($"Solde de de jojo après aquisition de L'avenue Louise: {jojo.Solde} €");
+            Console.WriteLine($"Solde Alain initial : {alain.Solde} €");
 
+            Console.WriteLine("Je passe sur une case [Caisse de communauté]");
+            caseBonus.AjouterVisiteur(alain);
 
-            titreJojo.Hypothequer();
-            Console.WriteLine($"Hypotèqye activé, solde jojo (+50%) {jojo.Solde} €");
-            Console.WriteLine($"est hypotéquée ? : {titreJojo.EstHypotequee}");
+            Console.WriteLine("Je passe sur une case [Taxe de luxe]");
+            caseMalus.AjouterVisiteur(alain);
 
-            titreJojo.Deshypothequer();
-            Console.WriteLine($"Hypotèque levée, solde jojo (-60%) {jojo.Solde} €");
+            Console.WriteLine($"Solde Alain final : {alain.Solde} €");
+
+            Console.ReadLine();
 
             #endregion
         }
