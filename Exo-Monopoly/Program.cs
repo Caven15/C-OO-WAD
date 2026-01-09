@@ -132,7 +132,7 @@ foreach (int lance in lances)
             List<IVisiteur> caseAvisiter = new List<IVisiteur>();
 
             Joueur jojo = new Joueur("Le Grand Jojo", Pions.Dino);
-            Console.WriteLine($"Solde de départ de jojo : {jojo.Solde}");
+            Console.WriteLine($"Solde de départ de jojo : {jojo.Solde}  €");
 
             CasePropriete AvenueLouise = new CasePropriete("Avenue Louise", Couleurs.Bleu, 400);
             caseAvisiter.Add(AvenueLouise);
@@ -150,7 +150,7 @@ foreach (int lance in lances)
             // On traite la rue uniquement sous l'angle gestion financière
             IProprietaire titreJojo = AvenueLouise;
 
-            Console.WriteLine($"Solde de de jojo après aquisition de L'avenueLouise: {jojo.Solde}");
+            Console.WriteLine($"Solde de de jojo après aquisition de L'avenue Louise: {jojo.Solde} €");
 
 
             titreJojo.Hypothequer();
@@ -158,7 +158,7 @@ foreach (int lance in lances)
             Console.WriteLine($"est hypotéquée ? : {titreJojo.EstHypotequee}");
 
             titreJojo.Deshypothequer();
-            Console.WriteLine($"Hypotèque levée, solde jojo (-60%) {jojo.Solde}");
+            Console.WriteLine($"Hypotèque levée, solde jojo (-60%) {jojo.Solde} €");
 
             #endregion
         }

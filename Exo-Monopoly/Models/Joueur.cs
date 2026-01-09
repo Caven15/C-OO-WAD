@@ -1,9 +1,10 @@
-﻿using Exo_Monopoly.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Exo_Monopoly.Enums;
+using Exo_Monopoly.Exceptions;
 
 namespace Exo_Monopoly.Models
 {
@@ -63,11 +64,17 @@ namespace Exo_Monopoly.Models
         }
         public void Payer(int montant)
         {
-            if(montant > 0 && Solde >= montant)
+            if (montant > Solde)
+            {
+                throw new NotEnoughMoneyException(this, montant);
+            }
+
+            if (montant > 0)
             {
                 Solde -= montant;
             }
         }
+
         public void AjouterPropriete(CasePropriete propriete)
         {
             if(propriete.Proprietaire == this && !_proprietes.Contains(propriete))

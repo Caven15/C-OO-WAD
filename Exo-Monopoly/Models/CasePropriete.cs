@@ -1,10 +1,11 @@
-﻿using Exo_Monopoly.Enums;
-using Exo_Monopoly.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Exo_Monopoly.Enums;
+using Exo_Monopoly.Exceptions;
+using Exo_Monopoly.Interfaces;
 
 namespace Exo_Monopoly.Models
 {
@@ -24,11 +25,20 @@ namespace Exo_Monopoly.Models
         #region Méthodes
         private void Acheter(Joueur acheteur)
         {
-            if (acheteur.Solde >= Prix)
+            try
             {
-                acheteur.Payer(Prix);
+                // On tente le payement
+                acheteur.Payer(this.Prix);
+
+                // si sa passe, on finalise l'achat
                 Proprietaire = acheteur;
                 acheteur.AjouterPropriete(this);
+
+            }
+            catch(NotEnoughMoneyException ex)
+            {
+                // Reprise des données pour déclenche une nouvelle exception avec le Bien
+                throw new NotEnoughMoneyException(ex.Payeur, ex.Montant, this);
             }
         }
 
